@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "array-move": "^4.0.0",
+    "express": "^5.1.0"
+  },
+  "name": "tcc",
+  "version": "1.0.0",
+  "main": "funcmove.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
