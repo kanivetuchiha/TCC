@@ -1,0 +1,64 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Container centralizado */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Botão estilizado */
+button {
+  padding: 12px 24px;
+  margin-bottom: 30px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Terreno */
+#terreno {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-gap: 20px;
+  padding: 20px;
+  background-color: #c0e4c0;
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+}
+
+/* Piquetes */
+.piquetes {
+  width: 150px;
+  height: 150px;
+  background-color: #fff;
+  border: 2px dashed #4caf50;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #4caf50;
+  transition: transform 0.2s ease;
+}
+
+.piquetes:hover {
+  transform: scale(1.05);
+}

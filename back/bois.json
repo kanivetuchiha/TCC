@@ -1,0 +1,92 @@
+{
+  "bois": [
+    {
+      "id": 1,
+      "codigo_uni": "boi-7f3a9c2d",
+      "raca": "Nelore",
+      "peso": "550kg",
+      "pelagem": "branca",
+      "tipo": "boi"
+    },
+    {
+      "id": 2,
+      "codigo_uni": "boi-a1d9b7f4",
+      "raca": "Angus",
+      "peso": "480kg",
+      "pelagem": "preta",
+      "tipo": "vaca"
+    },
+    {
+      "id": 3,
+      "codigo_uni": "boi-29f8d6a1",
+      "raca": "Brahman",
+      "peso": "620kg",
+      "pelagem": "acinzentada",
+      "tipo": "touro"
+    },
+    {
+      "id": 4,
+      "codigo_uni": "boi-c7e4a91b",
+      "raca": "Guzerá",
+      "peso": "530kg",
+      "pelagem": "marrom clara",
+      "tipo": "boi"
+    },
+    {
+      "id": 5,
+      "codigo_uni": "boi-91f2b83e",
+      "raca": "Girolando",
+      "peso": "470kg",
+      "pelagem": "malhada",
+      "tipo": "vaca"
+    },
+    {
+      "id": 6,
+      "codigo_uni": "boi-f36a2e71",
+      "raca": "Holandesa",
+      "peso": "490kg",
+      "pelagem": "preta e branca",
+      "tipo": "vaca"
+    },
+    {
+      "id": 7,
+      "codigo_uni": "boi-b28c7f94",
+      "raca": "Charolês",
+      "peso": "600kg",
+      "pelagem": "branca",
+      "tipo": "touro"
+    },
+    {
+      "id": 8,
+      "codigo_uni": "boi-64e9d1a2",
+      "raca": "Tabapuã",
+      "peso": "580kg",
+      "pelagem": "cinza clara",
+      "tipo": "boi"
+    },
+    {
+      "id": 9,
+      "codigo_uni": "boi-5d8b2c7f",
+      "raca": "Senepol",
+      "peso": "510kg",
+      "pelagem": "vermelha",
+      "tipo": "vaca"
+    },
+    {
+      "id": 10,
+      "codigo_uni": "boi-df2c98a4",
+      "raca": "Caracu",
+      "peso": "560kg",
+      "pelagem": "amarela",
+      "tipo": "boi"
+    },
+    {
+      "id": 11,
+      "codigo_uni": "boi-79bb7bba",
+      "raca": "Nelore",
+      "peso": "550kg",
+      "pelagem": "branca",
+      "tipo": "boi"
+    }
+  ]
+}
