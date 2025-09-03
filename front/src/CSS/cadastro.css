@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f0f0f0;
+  background-image: url('../../public/fundo.jpg');
 }
 
 /* Card do formulário */
@@ -66,9 +66,4 @@ button {
 
 button:hover {
   background-color: #45a049;
-}
-
-/* Pequena correção de tipo */
-button[type="submit"] {
-  /* já está estilizado acima */
 }

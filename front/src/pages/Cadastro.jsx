@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./CSS/cadastro.css"
+import "../CSS/cadastro.css"
 
 export default function Cadastro (){
 

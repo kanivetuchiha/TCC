@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,19 +6,19 @@
   font-family: Arial, sans-serif;
 }
 
-/* Container centralizado */
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px;
   min-height: 100vh;
-  background-color: #f0f0f0;
+  background-image: url('../../public/fundo.jpg');
 }
 
-/* Botão estilizado */
+
 button {
-  padding: 12px 24px;
+  max-width: 150px;
   margin-bottom: 30px;
   background-color: #4caf50;
   color: white;
@@ -33,7 +33,7 @@ button:hover {
   background-color: #45a049;
 }
 
-/* Terreno */
+
 #terreno {
   display: grid;
   grid-template-columns: repeat(2, 150px);
@@ -44,7 +44,7 @@ button:hover {
   border-radius: 12px;
 }
 
-/* Piquetes */
+
 .piquetes {
   width: 150px;
   height: 150px;
