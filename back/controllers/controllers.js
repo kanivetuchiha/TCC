@@ -1,56 +1,99 @@
-import { readFileSync, writeFileSync } from "fs";
+import pkg from "pg";
+import { randomUUID } from "crypto";
 import { arrayMoveMutable } from "array-move";
 
-const gerarCodigo = () => {
-  return "boi-" + Math.random().toString(16).substring(2, 10);
+const { Pool } = pkg;
+
+
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "fazenda",
+  password: "998449598",
+  port: 5432, 
+});
+
+
+const GerarCodigo = () => `boi-${randomUUID().slice(0, 8)}`;
+
+
+const CarregarGado = async () => {
+  try {
+    const result = await pool.query("SELECT * FROM bois ORDER BY posicao ASC");
+    return result.rows;
+  } catch (err) {
+    console.error("Erro ao carregar bois:", err);
+    return [];
+  }
 };
 
 
-const carregarDados = () => {
-  return JSON.parse(readFileSync("bois.json", "utf-8"));
+const CadastrarGado = async (req, res, novoBoi) => {
+  try {
+    const codigo_uni = GerarCodigo();
+
+   
+    const result = await pool.query(
+      "SELECT COALESCE(MAX(posicao), 0) AS max_posicao FROM bois"
+    );
+    const novaPosicao = result.rows[0].max_posicao + 1;
+
+    const query = `
+      INSERT INTO bois (codigo_uni, raca, peso, pelagem, tipo, posicao)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *;
+    `;
+
+    const values = [
+      codigo_uni,
+      novoBoi.raca,
+      novoBoi.peso,
+      novoBoi.pelagem,
+      novoBoi.tipo,
+      novaPosicao,
+    ];
+
+    const inserted = await pool.query(query, values);
+    res.json(inserted.rows[0]);
+  } catch (err) {
+    console.error("Erro ao cadastrar boi:", err);
+    throw err;
+  }
 };
 
 
-const salvarDados = (data) => {
-  writeFileSync("bois.json", JSON.stringify(data, null, 2), "utf-8");
+const ListarGado = async (req,res) => {
+  try {
+    const bois = await CarregarGado();
+    res.json(bois);
+  } catch (err) {
+    console.error("Erro ao listar bois:", err);
+    return [];
+  }
 };
 
 
-const cadastrarGado = (novoBoi) => {
-  const data = carregarDados();
+const MoverGado = async (req, res, posicaoAtual, novaPosicao) => {
+  try {
+    const bois = await CarregarGado();
 
-  const novoId =
-    data.bois.length > 0 ? data.bois[data.bois.length - 1].id + 1 : 1;
+    
+    arrayMoveMutable(bois, posicaoAtual, novaPosicao);
 
-  const boi = {
-    id: novoId,
-    codigo_uni: gerarCodigo(),
-    raca: novoBoi.raca,
-    peso: novoBoi.peso,
-    pelagem: novoBoi.pelagem,
-    tipo: novoBoi.tipo,
-  };
 
-  data.bois.push(boi);
-  salvarDados(data);
+    for (let i = 0; i < bois.length; i++) {
+      await pool.query(
+        "UPDATE bois SET posicao = $1 WHERE id = $2",
+        [i + 1, bois[i].id]
+      );
+    }
 
-  return boi;
+    res.json(bois);
+  } catch (err) {
+    console.error("Erro ao mover boi:", err);
+    throw err;
+  }
 };
 
 
-const listarGado = () => {
-  const data = carregarDados();
-  return data.bois;
-};
-
-
-const MoverGado = (posicaoAtual, novaPosicao) => {
-  const data = carregarDados();
-
-  arrayMoveMutable(data.bois, posicaoAtual, novaPosicao);
-
-  salvarDados(data);
-  return data.bois;
-};
-
-export default { cadastrarGado, listarGado, MoverGado };
+export default { CadastrarGado, ListarGado, MoverGado };

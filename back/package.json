@@ -2,17 +2,24 @@
   "dependencies": {
     "array-move": "^4.0.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "crypto": "^1.0.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
   },
   "name": "tcc",
   "version": "1.0.0",
   "main": "funcmove.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./sever.js",
+    "dev": "nodemon ./sever.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }

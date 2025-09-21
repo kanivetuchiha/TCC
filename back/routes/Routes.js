@@ -3,8 +3,8 @@ import controller from "../controllers/controllers.js";
 
 const router = Router();
 
-router.post("/cadastro", controller.cadastrarGado);
-router.get("/listar", controller.listarGado);  
+router.post("/cadastro", controller.CadastrarGado);
+router.get("/listar", controller.ListarGado);  
 router.post("/mover", controller.MoverGado); 
 
 export default router
