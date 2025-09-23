@@ -28,8 +28,10 @@ const CarregarGado = async () => {
 };
 
 
-const CadastrarGado = async (req, res, novoBoi) => {
+const CadastrarGado = async (req, res) => {
   try {
+
+    const novoBoi = req.body;
     const codigo_uni = GerarCodigo();
 
    
@@ -43,7 +45,7 @@ const CadastrarGado = async (req, res, novoBoi) => {
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
-
+    
     const values = [
       codigo_uni,
       novoBoi.raca,
@@ -52,6 +54,7 @@ const CadastrarGado = async (req, res, novoBoi) => {
       novoBoi.tipo,
       novaPosicao,
     ];
+
 
     const inserted = await pool.query(query, values);
     res.json(inserted.rows[0]);

@@ -1,33 +1,72 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../CSS/cadastro.css"
+import axios from "axios";
+import "../CSS/cadastro.css";
 
-export default function Cadastro (){
+export default function Cadastro() {
+  const navigate = useNavigate();
 
- const navigate = useNavigate();
-    const click = function () {
-        navigate("/")
+  const [raca, setRaca] = useState("");
+  const [peso, setPeso] = useState(0);
+  const [pelagem, setPelagem] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [resposta, setResposta] = useState(null);
+
+  const enviarDados = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:3000/cadastro", {
+        raca,
+        peso,
+        pelagem,
+        tipo,
+      });
+      setResposta(res.data);
+      navigate("/");
+    } catch (err) {
+      console.error("Erro ao enviar:", err);
     }
+  };
 
-    return(
-        <div className="container">
-            <div className="card-center">
-<form>
-<label>insira a raça</label><br/>
-<input/> <br/>
+  return (
+    <div className="container">
+      <div className="card-center">
+        <form onSubmit={enviarDados}>
+          <label>Insira a raça</label><br/>
+          <input
+            type="text"
+            value={raca}
+            onChange={(e) => setRaca(e.target.value)}
+            placeholder="Digite a raça"
+          /> <br/>
 
-<label>insira o peso</label><br/>
-<input/> <br/>
+          <label>Insira o peso</label><br/>
+          <input
+            type="number"
+            value={peso}
+            onChange={(e) => setPeso(Number(e.target.value))}
+            placeholder="Digite o peso em Kg"
+          /> <br/>
 
-<label>insira a pelagem</label><br/>
-<input/> <br/>
+          <label>Insira a pelagem</label><br/>
+          <input
+            type="text"
+            value={pelagem}
+            onChange={(e) => setPelagem(e.target.value)}
+            placeholder="Digite a pelagem"
+          /> <br/>
 
-<label>insira o tipo</label><br/>
-<input/> <br/>
+          <label>Insira o tipo</label><br/>
+          <input
+            type="text"
+            value={tipo}
+            onChange={(e) => setTipo(e.target.value)}
+            placeholder="Digite o tipo"
+          /> <br/>
 
-    <button type="submint" onClick={click}>SALVAR</button>
-</form>
-
-            </div>
-        </div>
-    )
+          <button type="submit">SALVAR</button>
+        </form>
+      </div>
+    </div>
+  );
 }
