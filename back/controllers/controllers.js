@@ -64,6 +64,59 @@ const CadastrarGado = async (req, res) => {
   }
 };
 
+const excluirGado = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await pool.query(
+      "DELETE FROM bois WHERE boi_id = $1 RETURNING *",
+      [id]
+    );
+
+    if (deleted.rows.length === 0) {
+      return res.status(404).json({ message: "Boi não encontrado" });
+    }
+
+    res.json({ message: "Boi excluído com sucesso", boi: deleted.rows[0] });
+  } catch (err) {
+    console.error("Erro ao excluir boi:", err);
+    res.status(500).json({ message: "Erro ao excluir boi", error: err.message });
+  }
+};
+
+
+const editarGado = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const query = `
+      UPDATE bois
+      SET raca = $1, peso = $2, pelagem = $3, tipo = $4
+      WHERE boi_id = $5
+      RETURNING *;
+    `;
+
+    const values = [
+      req.body.raca ?? req.body.raca,
+      req.body.peso ?? req.body.peso,
+      req.body.pelagem ?? req.body.pelagem,
+      req.body.tipo ?? req.body.tipo,
+      id
+    ];
+
+    const updated = await pool.query(query, values);
+
+    if (updated.rows.length === 0) {
+      return res.status(404).json({ message: "Boi não encontrado" });
+    }
+
+    res.json(updated.rows[0]);
+  } catch (err) {
+    console.error("Erro ao editar boi:", err);
+    res.status(500).json({ message: "Erro ao editar boi", error: err.message });
+  }
+};
+
 
 const ListarGado = async (req,res) => {
   try {
@@ -99,4 +152,4 @@ const MoverGado = async (req, res, posicaoAtual, novaPosicao) => {
 };
 
 
-export default { CadastrarGado, ListarGado, MoverGado };
+export default { CadastrarGado, ListarGado, MoverGado, editarGado, excluirGado };

@@ -1,12 +1,3 @@
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-
 .container {
   display: flex;
   flex-direction: column;
@@ -16,35 +7,6 @@
   background-image: url('../../public/fundo.jpg');
   background-attachment: fixed;
 }
-
-
-button {
-  max-width: 150px;
-  margin-bottom: 30px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-
-#terreno {
-  display: grid;
-  grid-template-columns: repeat(2, 400px);
-  grid-gap: 20px;
-  padding: 20px;
-  background-color: #c0e4c0;
-  border: 2px solid #4caf50;
-  border-radius: 12px;
-}
-
 
 .piquetes {
   width: 400px;
@@ -62,4 +24,124 @@ button:hover {
 
 .piquetes:hover {
   transform: scale(1.05);
+}
+
+#terreno {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, 400px);
+  grid-gap: 20px;
+  padding: 20px;
+  background-color: #c0e4c0;
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+}
+
+.btn-add {
+  background-color: #228b22;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-add:hover {
+  background-color: #1b6d1b;
+}
+
+
+.boi {
+  width: 96px;
+  height: 96px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  background-image: url('../../public/cowIco.png');
+}
+
+.boi:hover {
+  transform: scale(1.05);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal box */
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.modal h2 {
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn.delete {
+  background: #d9534f;
+}
+
+.btn.delete:hover {
+  background: #b52b27;
+}
+
+.btn.edit {
+  background: #0275d8;
+}
+
+.btn.edit:hover {
+  background: #025aa5;
+}
+
+.btn.move {
+  background: #f0ad4e;
+}
+
+.btn.move:hover {
+  background: #d48a23;
+}
+
+.btn-close {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-close:hover {
+  text-decoration: underline;
 }
