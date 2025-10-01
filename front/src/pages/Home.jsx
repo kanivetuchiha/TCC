@@ -29,7 +29,7 @@ export default function Home() {
     recebeDados();
   }, []);
 
-  // Abrir modal já com dados preenchidos
+  
   const abrirModal = (boi) => {
     setBoiClicado(boi);
     setFormData({
@@ -41,7 +41,7 @@ export default function Home() {
     setNovaPosicao(boi.posicao || "");
   };
 
-  // Deletar boi
+ 
   const deletar = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este boi?")) return;
 
@@ -57,7 +57,7 @@ export default function Home() {
     }
   };
 
-  // Editar boi
+
   const editar = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/editar/${id}`, {
@@ -77,7 +77,7 @@ export default function Home() {
     }
   };
 
-  // Mover boi
+  
   const mover = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/mover`, {
