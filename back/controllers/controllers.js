@@ -129,27 +129,41 @@ const ListarGado = async (req,res) => {
 };
 
 
-const MoverGado = async (req, res, posicaoAtual, novaPosicao) => {
+const MoverGado = async (req, res) => {
   try {
+    const { boi_id } = req.params.id;
+    const novaPosicao = req.body
+    
+    if (!boi_id || novaPosicao === undefined) {
+      return res.status(400).json({ message: "boi_id e novaPosicao são obrigatórios" });
+    }
+
     const bois = await CarregarGado();
+
+  
+    const posicaoAtual = bois.findIndex(b => b.boi_id === boi_id);
+    if (posicaoAtual === -1) {
+      return res.status(404).json({ message: "Boi não encontrado" });
+    }
 
     
     arrayMoveMutable(bois, posicaoAtual, novaPosicao);
 
-
+   
     for (let i = 0; i < bois.length; i++) {
       await pool.query(
-        "UPDATE bois SET posicao = $1 WHERE id = $2",
-        [i + 1, bois[i].id]
+        "UPDATE bois SET posicao = $1 WHERE boi_id = $2",
+        [i + 1, bois[i].boi_id]
       );
     }
 
-    res.json(bois);
+    res.json({ message: "Boi movido com sucesso", bois });
   } catch (err) {
     console.error("Erro ao mover boi:", err);
-    throw err;
+    res.status(500).json({ message: "Erro ao mover boi", error: err.message });
   }
 };
+
 
 
 export default { CadastrarGado, ListarGado, MoverGado, editarGado, excluirGado };

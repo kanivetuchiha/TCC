@@ -5,7 +5,7 @@ const router = Router();
 
 router.post("/cadastro", controller.CadastrarGado);
 router.get("/listar", controller.ListarGado);  
-router.post("/mover", controller.MoverGado);
+router.patch("/mover/:id", controller.MoverGado);
 router.put("/editar/:id", controller.editarGado);
 router.delete("/excluir/:id", controller.excluirGado); 
 

@@ -32,12 +32,13 @@
   grid-template-columns: repeat(2, 400px);
   grid-gap: 20px;
   padding: 20px;
+  margin: 20px;
   background-color: #c0e4c0;
   border: 2px solid #4caf50;
   border-radius: 12px;
 }
 
-.btn-add {
+.botao_add {
   background-color: #228b22;
   color: white;
   padding: 10px 16px;
@@ -46,7 +47,7 @@
   cursor: pointer;
 }
 
-.btn-add:hover {
+.botao_add:hover {
   background-color: #1b6d1b;
 }
 
@@ -59,6 +60,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   border: none;
+  margin: 2px;
   cursor: pointer;
   transition: transform 0.2s ease;
   background-image: url('../../public/cowIco.png');
@@ -68,7 +70,7 @@
   transform: scale(1.05);
 }
 
-/* Modal overlay */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -81,7 +83,7 @@
   justify-content: center;
 }
 
-/* Modal box */
+
 .modal {
   background: white;
   padding: 20px;
@@ -101,7 +103,7 @@
   margin: 20px 0;
 }
 
-.btn {
+.botao {
   padding: 8px 12px;
   border: none;
   border-radius: 6px;
@@ -109,31 +111,31 @@
   cursor: pointer;
 }
 
-.btn.delete {
+.botao_deletar {
   background: #d9534f;
 }
 
-.btn.delete:hover {
+.botao_deletar:hover {
   background: #b52b27;
 }
 
-.btn.edit {
+.botao_editar {
   background: #0275d8;
 }
 
-.btn.edit:hover {
+.botao_editar:hover {
   background: #025aa5;
 }
 
-.btn.move {
+.botao_mover {
   background: #f0ad4e;
 }
 
-.btn.move:hover {
+.botao_mover:hover {
   background: #d48a23;
 }
 
-.btn-close {
+.botao_fechar {
   margin-top: 10px;
   background: none;
   border: none;
@@ -142,6 +144,6 @@
   font-size: 14px;
 }
 
-.btn-close:hover {
+.botao_fechar:hover {
   text-decoration: underline;
 }
