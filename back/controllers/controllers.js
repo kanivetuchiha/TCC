@@ -131,23 +131,22 @@ const ListarGado = async (req,res) => {
 
 const MoverGado = async (req, res) => {
   try {
-    const { boi_id } = req.params.id;
-    const novaPosicao = req.body
-    
-    if (!boi_id || novaPosicao === undefined) {
+    const { boi_id, novaPosicao } = req.body; 
+
+    if (!boi_id || !novaPosicao) {
       return res.status(400).json({ message: "boi_id e novaPosicao são obrigatórios" });
     }
 
+
     const bois = await CarregarGado();
 
-  
-    const posicaoAtual = bois.findIndex(b => b.boi_id === boi_id);
+
+    const posicaoAtual = bois.findIndex((b) => b.boi_id === boi_id);
     if (posicaoAtual === -1) {
       return res.status(404).json({ message: "Boi não encontrado" });
     }
 
-    
-    arrayMoveMutable(bois, posicaoAtual, novaPosicao);
+    arrayMoveMutable(bois, posicaoAtual, novaPosicao - 1);
 
    
     for (let i = 0; i < bois.length; i++) {
@@ -157,7 +156,8 @@ const MoverGado = async (req, res) => {
       );
     }
 
-    res.json({ message: "Boi movido com sucesso", bois });
+    const atualizados = await CarregarGado();
+    res.json({ message: "Boi movido com sucesso", bois: atualizados });
   } catch (err) {
     console.error("Erro ao mover boi:", err);
     res.status(500).json({ message: "Erro ao mover boi", error: err.message });

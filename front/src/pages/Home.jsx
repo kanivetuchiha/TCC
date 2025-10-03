@@ -5,10 +5,17 @@ import { useState, useEffect } from "react";
 export default function Home() {
   const [BoiClicado, setBoiClicado] = useState(null);
   const [bois, setBois] = useState([]);
-  const [formData, setFormData] = useState({ raca: "", peso: "", pelagem: "", tipo: "" });
+  const [formData, setFormData] = useState({
+    raca: "",
+    peso: "",
+    pelagem: "",
+    tipo: "",
+  });
   const [novaPosicao, setNovaPosicao] = useState("");
-
   const navigate = useNavigate();
+
+  // Função para calcular piquete baseado na posição
+  const getPiquete = (posicao) => Math.ceil(posicao / 10);
 
   const click = () => {
     navigate("/cadastro");
@@ -29,7 +36,6 @@ export default function Home() {
     recebeDados();
   }, []);
 
-  
   const abrirModal = (boi) => {
     setBoiClicado(boi);
     setFormData({
@@ -38,10 +44,9 @@ export default function Home() {
       pelagem: boi.pelagem,
       tipo: boi.tipo,
     });
-    setNovaPosicao(boi.posicao || "");
+    setNovaPosicao(getPiquete(boi.posicao)); // selecionar piquete atual
   };
 
- 
   const deletar = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este boi?")) return;
 
@@ -56,7 +61,6 @@ export default function Home() {
       alert("Erro ao excluir boi");
     }
   };
-
 
   const editar = async (id) => {
     try {
@@ -77,13 +81,15 @@ export default function Home() {
     }
   };
 
-  
   const mover = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/mover`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ boi_id: id, novaPosicao: parseInt(novaPosicao) }),
+        body: JSON.stringify({
+          boi_id: id,
+          novaPosicao: parseInt(novaPosicao),
+        }),
       });
 
       const atualizado = await response.json();
@@ -101,21 +107,31 @@ export default function Home() {
         adicionar gado
       </button>
 
+      {/* Terreno com 4 piquetes */}
       <div id="terreno">
-        <div className="piquetes">
-          {bois.map((boi) => (
-            <button
-              key={boi.boi_id}
-              className="boi"
-              onClick={() => abrirModal(boi)}
-            ></button>
-          ))}
-        </div>
-        <div className="piquetes"></div>
-        <div className="piquetes"></div>
-        <div className="piquetes"></div>
+        {[1, 2, 3, 4].map((piquete) => (
+          <div key={piquete} className="piquetes">
+            <h3>Piquete {piquete}</h3>
+            <div className="bois-container">
+              {bois
+                .filter((boi) => getPiquete(boi.posicao) === piquete)
+                .map((boi) => (
+                  <button
+                    key={boi.boi_id}
+                    className="boi"
+                    onClick={() => abrirModal(boi)}
+                  >
+                    🐂
+                  </button>
+                ))}
+              {bois.filter((boi) => getPiquete(boi.posicao) === piquete)
+                .length === 0 && <p className="vazio">Sem bois aqui</p>}
+            </div>
+          </div>
+        ))}
       </div>
 
+      {/* Modal para editar/mover/deletar */}
       {BoiClicado && (
         <div className="modal-overlay">
           <div className="modal">
@@ -133,7 +149,9 @@ export default function Home() {
                 <input
                   type="text"
                   value={formData.raca}
-                  onChange={(e) => setFormData({ ...formData, raca: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, raca: e.target.value })
+                  }
                 />
               </label>
               <label>
@@ -141,7 +159,9 @@ export default function Home() {
                 <input
                   type="number"
                   value={formData.peso}
-                  onChange={(e) => setFormData({ ...formData, peso: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, peso: e.target.value })
+                  }
                 />
               </label>
               <label>
@@ -149,7 +169,9 @@ export default function Home() {
                 <input
                   type="text"
                   value={formData.pelagem}
-                  onChange={(e) => setFormData({ ...formData, pelagem: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, pelagem: e.target.value })
+                  }
                 />
               </label>
               <label>
@@ -157,7 +179,9 @@ export default function Home() {
                 <input
                   type="text"
                   value={formData.tipo}
-                  onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, tipo: e.target.value })
+                  }
                 />
               </label>
 
@@ -168,14 +192,32 @@ export default function Home() {
               </div>
             </form>
 
+            {/* Mover entre piquetes */}
             <div className="mover-section">
               <label>
-                Nova posição:
-                <input
-                  type="number"
+                Novo piquete:
+                <select
                   value={novaPosicao}
                   onChange={(e) => setNovaPosicao(e.target.value)}
-                />
+                >
+                  <option value="">Selecione</option>
+                  {[1, 2, 3, 4].map((piquete) => (
+                    <option
+                      key={piquete}
+                      value={piquete}
+                      disabled={
+                        bois.filter(
+                          (b) => getPiquete(b.posicao) === piquete
+                        ).length >= 10
+                      }
+                    >
+                      Piquete {piquete} (
+                      {bois.filter((b) => getPiquete(b.posicao) === piquete)
+                        .length}
+                      /10)
+                    </option>
+                  ))}
+                </select>
               </label>
               <button
                 className="botao_mover"

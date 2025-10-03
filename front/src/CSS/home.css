@@ -21,6 +21,10 @@
   color: #4caf50;
   transition: transform 0.2s ease;
 }
+.piquetes:h1{
+  position: fixed;
+  align-self: center;
+}
 
 .piquetes:hover {
   transform: scale(1.05);
@@ -78,7 +82,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0,0,0,0.5);
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
 }
@@ -88,7 +92,8 @@
   background: white;
   padding: 20px;
   border-radius: 16px;
-  width: 320px;
+  width: auto;
+
   text-align: center;
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
