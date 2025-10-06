@@ -14,7 +14,7 @@ export default function Home() {
   const [novaPosicao, setNovaPosicao] = useState("");
   const navigate = useNavigate();
 
-  // Função para calcular piquete baseado na posição
+
   const getPiquete = (posicao) => Math.ceil(posicao / 10);
 
   const click = () => {
@@ -44,7 +44,7 @@ export default function Home() {
       pelagem: boi.pelagem,
       tipo: boi.tipo,
     });
-    setNovaPosicao(getPiquete(boi.posicao)); // selecionar piquete atual
+    setNovaPosicao(getPiquete(boi.posicao)); 
   };
 
   const deletar = async (id) => {
@@ -107,7 +107,7 @@ export default function Home() {
         adicionar gado
       </button>
 
-      {/* Terreno com 4 piquetes */}
+      
       <div id="terreno">
         {[1, 2, 3, 4].map((piquete) => (
           <div key={piquete} className="piquetes">
@@ -121,7 +121,7 @@ export default function Home() {
                     className="boi"
                     onClick={() => abrirModal(boi)}
                   >
-                    🐂
+                    
                   </button>
                 ))}
               {bois.filter((boi) => getPiquete(boi.posicao) === piquete)
@@ -131,7 +131,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Modal para editar/mover/deletar */}
+      
       {BoiClicado && (
         <div className="modal-overlay">
           <div className="modal">
@@ -192,7 +192,7 @@ export default function Home() {
               </div>
             </form>
 
-            {/* Mover entre piquetes */}
+            
             <div className="mover-section">
               <label>
                 Novo piquete:
