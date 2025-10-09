@@ -8,32 +8,73 @@
   background-attachment: fixed;
 }
 
+.navbar {
+  width: 100%;
+  background-color: #4caf50;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  height: 100px;
+  display: flex;                 
+  justify-content: space-between;
+  align-items: center;           
+  border-radius: 8px;
+  color: white;
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+}
+
+.links a {
+  color: rgb(5, 226, 255);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+
 .piquetes {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   background-color: #fff;
   border: 2px dashed #4caf50;
   border-radius: 8px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #4caf50;
-  transition: transform 0.2s ease;
-}
-.piquetes:h1{
-  position: fixed;
-  align-self: center;
+  flex-direction: column; 
+  position: relative;
+  overflow: hidden;
 }
 
-.piquetes:hover {
-  transform: scale(1.05);
+.piquete-header {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  border-bottom: 2px solid #388e3c;
+  position: sticky; 
+  top: 0;
 }
+
+.bois-container {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
 
 #terreno {
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(2, 400px);
+  grid-template-columns: repeat(2, 500px);
   grid-gap: 20px;
   padding: 20px;
   margin: 20px;
@@ -43,12 +84,13 @@
 }
 
 .botao_add {
-  background-color: #228b22;
+  background-color: #034103;
   color: white;
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  width: 300px;
 }
 
 .botao_add:hover {

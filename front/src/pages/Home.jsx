@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function Home() {
+  const navigate = useNavigate();
+
+
+  const PIQUETES = 4;
+  const CAPACIDADE = 10;
+
+
   const [BoiClicado, setBoiClicado] = useState(null);
   const [bois, setBois] = useState([]);
   const [formData, setFormData] = useState({
@@ -11,21 +18,21 @@ export default function Home() {
     pelagem: "",
     tipo: "",
   });
-  const [novaPosicao, setNovaPosicao] = useState("");
-  const navigate = useNavigate();
+  const [novaPiquete, setNovaPiquete] = useState("");
+  const [novaPosicaoAbsoluta, setNovaPosicaoAbsoluta] = useState("");
 
+  const getPiquete = (posicao) => Math.ceil(posicao / CAPACIDADE);
 
-  const getPiquete = (posicao) => Math.ceil(posicao / 10);
+  const click = () => navigate("/cadastro");
 
-  const click = () => {
-    navigate("/cadastro");
-  };
-
+  // busca dados do servidor
   const recebeDados = async () => {
     try {
       const api = await fetch("http://localhost:3000/listar");
       const data = await api.json();
-      setBois(data);
+      if (Array.isArray(data)) setBois(data);
+      else if (data.bois) setBois(data.bois);
+      else setBois([]);
     } catch (err) {
       alert("Erro ao receber dados do servidor");
       console.error(err);
@@ -36,6 +43,21 @@ export default function Home() {
     recebeDados();
   }, []);
 
+  // retorna posições livres dentro do piquete
+  const getPosicoesLivres = (piquete) => {
+    if (!piquete) return [];
+    const inicio = (piquete - 1) * CAPACIDADE + 1;
+    const fim = piquete * CAPACIDADE;
+    const ocupadasSet = new Set(
+      bois.filter((b) => b.posicao >= inicio && b.posicao <= fim).map((b) => b.posicao)
+    );
+    const livres = [];
+    for (let i = inicio; i <= fim; i++) {
+      if (!ocupadasSet.has(i)) livres.push(i);
+    }
+    return livres;
+  };
+
   const abrirModal = (boi) => {
     setBoiClicado(boi);
     setFormData({
@@ -44,16 +66,15 @@ export default function Home() {
       pelagem: boi.pelagem,
       tipo: boi.tipo,
     });
-    setNovaPosicao(getPiquete(boi.posicao)); 
+    const piq = getPiquete(boi.posicao);
+    setNovaPiquete(piq);
+    setNovaPosicaoAbsoluta(boi.posicao);
   };
 
   const deletar = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir este boi?")) return;
-
     try {
-      await fetch(`http://localhost:3000/excluir/${id}`, {
-        method: "DELETE",
-      });
+      await fetch(`http://localhost:3000/excluir/${id}`, { method: "DELETE" });
       setBois((prev) => prev.filter((boi) => boi.boi_id !== id));
       setBoiClicado(null);
     } catch (err) {
@@ -69,12 +90,13 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const atualizado = await response.json();
-      setBois((prev) =>
-        prev.map((boi) => (boi.boi_id === id ? atualizado : boi))
-      );
-      setBoiClicado(atualizado);
+      if (atualizado && atualizado.boi_id) {
+        setBois((prev) => prev.map((b) => (b.boi_id === id ? atualizado : b)));
+        setBoiClicado(atualizado);
+      } else {
+        await recebeDados();
+      }
     } catch (err) {
       console.error("Erro ao editar boi:", err);
       alert("Erro ao editar boi");
@@ -82,18 +104,20 @@ export default function Home() {
   };
 
   const mover = async (id) => {
+    if (!novaPiquete || !novaPosicaoAbsoluta) {
+      alert("Selecione um piquete com posição disponível.");
+      return;
+    }
     try {
-      const response = await fetch(`http://localhost:3000/mover`, {
+      const body = { boi_id: id, novaPosicao: novaPosicaoAbsoluta };
+      const response = await fetch("http://localhost:3000/mover", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          boi_id: id,
-          novaPosicao: parseInt(novaPosicao),
-        }),
+        body: JSON.stringify(body),
       });
-
-      const atualizado = await response.json();
-      setBois(atualizado.bois);
+      const data = await response.json();
+      if (data && data.bois) setBois(data.bois);
+      else await recebeDados();
       setBoiClicado(null);
     } catch (err) {
       console.error("Erro ao mover boi:", err);
@@ -103,11 +127,14 @@ export default function Home() {
 
   return (
     <div className="container">
-      <button className="botao_add" onClick={click}>
-        adicionar gado
-      </button>
+      <nav className="navbar">
+        <h1>Gerenciamento de Gado</h1>
+        <div className="links">
+          <a href="" onClick={() => navigate("/galeria")}>galeria bovina</a>
+          <a href="" onClick={() => navigate("/sobre")}>Sobre</a>
+        </div>
+      </nav>
 
-      
       <div id="terreno">
         {[1, 2, 3, 4].map((piquete) => (
           <div key={piquete} className="piquetes">
@@ -120,23 +147,22 @@ export default function Home() {
                     key={boi.boi_id}
                     className="boi"
                     onClick={() => abrirModal(boi)}
-                  >
-                    
-                  </button>
+                    title={`ID ${boi.boi_id} - pos ${boi.posicao}`}
+                  />
                 ))}
-              {bois.filter((boi) => getPiquete(boi.posicao) === piquete)
-                .length === 0 && <p className="vazio">Sem bois aqui</p>}
+              {bois.filter((boi) => getPiquete(boi.posicao) === piquete).length === 0 && (
+                <p className="vazio">Sem bois aqui</p>
+              )}
             </div>
           </div>
         ))}
       </div>
 
-      
       {BoiClicado && (
         <div className="modal-overlay">
           <div className="modal">
             <h2>{BoiClicado.nome || "Boi"}</h2>
-            <p>ID: {BoiClicado.boi_id}</p>
+            <p>ID: {BoiClicado.boi_id} — posição atual: {BoiClicado.posicao}</p>
 
             <form
               onSubmit={(e) => {
@@ -149,9 +175,7 @@ export default function Home() {
                 <input
                   type="text"
                   value={formData.raca}
-                  onChange={(e) =>
-                    setFormData({ ...formData, raca: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, raca: e.target.value })}
                 />
               </label>
               <label>
@@ -159,9 +183,7 @@ export default function Home() {
                 <input
                   type="number"
                   value={formData.peso}
-                  onChange={(e) =>
-                    setFormData({ ...formData, peso: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, peso: e.target.value })}
                 />
               </label>
               <label>
@@ -169,9 +191,7 @@ export default function Home() {
                 <input
                   type="text"
                   value={formData.pelagem}
-                  onChange={(e) =>
-                    setFormData({ ...formData, pelagem: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, pelagem: e.target.value })}
                 />
               </label>
               <label>
@@ -179,70 +199,61 @@ export default function Home() {
                 <input
                   type="text"
                   value={formData.tipo}
-                  onChange={(e) =>
-                    setFormData({ ...formData, tipo: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
                 />
               </label>
 
               <div className="actions">
-                <button type="submit" className="botao_editar">
-                  Salvar alterações
-                </button>
+                <button type="submit" className="botao_editar">Salvar alterações</button>
               </div>
             </form>
 
-            
             <div className="mover-section">
               <label>
-                Novo piquete:
+                Piquete destino:
                 <select
-                  value={novaPosicao}
-                  onChange={(e) => setNovaPosicao(e.target.value)}
+                  value={novaPiquete}
+                  onChange={(e) => {
+                    const val = e.target.value ? parseInt(e.target.value) : "";
+                    setNovaPiquete(val);
+                    const livres = getPosicoesLivres(val);
+                    if (BoiClicado && getPiquete(BoiClicado.posicao) === val) {
+                      setNovaPosicaoAbsoluta(BoiClicado.posicao);
+                    } else {
+                      setNovaPosicaoAbsoluta(livres.length ? livres[0] : "");
+                    }
+                  }}
                 >
                   <option value="">Selecione</option>
-                  {[1, 2, 3, 4].map((piquete) => (
-                    <option
-                      key={piquete}
-                      value={piquete}
-                      disabled={
-                        bois.filter(
-                          (b) => getPiquete(b.posicao) === piquete
-                        ).length >= 10
-                      }
-                    >
-                      Piquete {piquete} (
-                      {bois.filter((b) => getPiquete(b.posicao) === piquete)
-                        .length}
-                      /10)
-                    </option>
-                  ))}
+                  {Array.from({ length: PIQUETES }, (_, i) => i + 1).map((p) => {
+                    const livres = getPosicoesLivres(p);
+                    const estaNoMesmoPiquete = BoiClicado && getPiquete(BoiClicado.posicao) === p;
+                    const disabled = !estaNoMesmoPiquete && livres.length === 0;
+                    return (
+                      <option key={p} value={p} disabled={disabled}>
+                        Piquete {p} ({CAPACIDADE - livres.length}/{CAPACIDADE})
+                      </option>
+                    );
+                  })}
                 </select>
               </label>
+
               <button
                 className="botao_mover"
                 onClick={() => mover(BoiClicado.boi_id)}
+                disabled={!novaPiquete || !novaPosicaoAbsoluta}
               >
                 Mover
               </button>
             </div>
 
-            <button
-              className="botao_deletar"
-              onClick={() => deletar(BoiClicado.boi_id)}
-            >
-              Excluir
-            </button>
-
-            <button
-              className="botao_fechar"
-              onClick={() => setBoiClicado(null)}
-            >
-              Fechar
-            </button>
+            <button className="botao_deletar" onClick={() => deletar(BoiClicado.boi_id)}>Excluir</button>
+            <button className="botao_fechar" onClick={() => setBoiClicado(null)}>Fechar</button>
           </div>
         </div>
       )}
+
+      <button className="botao_add" onClick={click}>adicionar gado</button>
     </div>
   );
 }
