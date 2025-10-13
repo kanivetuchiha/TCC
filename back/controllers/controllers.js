@@ -23,7 +23,7 @@ const CarregarGado = async () => {
   }
 };
 
-// Cadastrar novo boi
+
 const CadastrarGado = async (req, res) => {
   try {
     const novoBoi = req.body;
@@ -57,7 +57,7 @@ const CadastrarGado = async (req, res) => {
   }
 };
 
-// Listar todos os bois
+
 const ListarGado = async (req, res) => {
   try {
     const bois = await CarregarGado();
@@ -68,7 +68,7 @@ const ListarGado = async (req, res) => {
   }
 };
 
-// Editar dados de um boi
+
 const editarGado = async (req, res) => {
   const { id } = req.params;
 
@@ -101,7 +101,7 @@ const editarGado = async (req, res) => {
   }
 };
 
-// Excluir boi
+
 const excluirGado = async (req, res) => {
   const { id } = req.params;
 
@@ -122,7 +122,7 @@ const excluirGado = async (req, res) => {
   }
 };
 
-// Mover boi para nova posição (respeitando posição absoluta)
+
 const MoverGado = async (req, res) => {
   try {
     const { boi_id, novaPosicao } = req.body; 
@@ -131,7 +131,6 @@ const MoverGado = async (req, res) => {
       return res.status(400).json({ message: "boi_id e novaPosicao são obrigatórios" });
     }
 
-    // Atualiza apenas o boi enviado
     const updateResult = await pool.query(
       "UPDATE bois SET posicao = $1 WHERE boi_id = $2 RETURNING *",
       [novaPosicao, boi_id]
@@ -141,7 +140,7 @@ const MoverGado = async (req, res) => {
       return res.status(404).json({ message: "Boi não encontrado" });
     }
 
-    const boisAtualizados = await CarregarGado(); // pega todos os bois atualizados
+    const boisAtualizados = await CarregarGado();
     res.json({ message: "Boi movido com sucesso", bois: boisAtualizados });
   } catch (err) {
     console.error("Erro ao mover boi:", err);
