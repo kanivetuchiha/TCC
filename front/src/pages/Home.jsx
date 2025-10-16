@@ -25,7 +25,7 @@ export default function Home() {
 
   const click = () => navigate("/cadastro");
 
-  // busca dados do servidor
+
   const recebeDados = async () => {
     try {
       const api = await fetch("http://localhost:3000/listar");
@@ -43,7 +43,7 @@ export default function Home() {
     recebeDados();
   }, []);
 
-  // retorna posições livres dentro do piquete
+
   const getPosicoesLivres = (piquete) => {
     if (!piquete) return [];
     const inicio = (piquete - 1) * CAPACIDADE + 1;
