@@ -1,18 +1,13 @@
-import cors from "cors";
-import express from "express";
-import Routes from "./routes/Routes.js";
+import { Router } from "express";
+import controller, { upload } from "../controllers/controllers.js";
 
-const app = express();
-const PORT = 3000;
+const router = Router();
 
-app.use(cors());
-app.use(express.json());
-app.use("/", Routes);
-app.get("/", (req, res) => {
-  res.send("API de Gerenciamento de Gado");
-}
-  )
+router.post("/cadastro", upload.single("imagem"), controller.CadastrarGado);
+router.get("/listar", controller.ListarGado);
+router.patch("/mover", controller.MoverGado);
+router.put("/editar/:id", controller.editarGado);
+router.delete("/excluir/:id", controller.excluirGado);
+router.get("/foto/:id", controller.obterImagem);
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+export default router;
