@@ -47,7 +47,7 @@ const CadastrarGado = async (req, res) => {
     const novaPosicao = result.rows[0].max_posicao + 1;
 
     const query = `
-      INSERT INTO bois (codigo_uni, raca, peso, pelagem, tipo, posicao, imagem)
+      INSERT INTO bois (codigo_uni, raca, peso, pelagem, tipo, posicao, foto)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
@@ -131,18 +131,22 @@ const MoverGado = async (req, res) => {
 const obterImagem = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query("SELECT imagem FROM bois WHERE boi_id = $1", [id]);
+    const result = await pool.query("SELECT foto FROM bois WHERE boi_id = $1", [id]);
 
-    if (result.rows.length === 0 || !result.rows[0].imagem)
+    if (result.rows.length === 0 || !result.rows[0].foto) {
       return res.status(404).json({ message: "Imagem não encontrada" });
+    }
+ 
 
+    
     res.setHeader("Content-Type", "image/png");
-    res.send(result.rows[0].imagem);
+    res.send(result.rows[0].foto);
   } catch (err) {
     console.error("Erro ao buscar imagem:", err);
     res.status(500).json({ message: "Erro ao buscar imagem", error: err.message });
   }
 };
+
 
 export default {
   CadastrarGado,

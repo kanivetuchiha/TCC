@@ -1,0 +1,74 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    min-height: 100vh;
+    background-image: url('../../public/fundo.jpg');
+    background-attachment: fixed;
+  }
+  
+  .navbar {
+    width: 100%;
+    background-color: #4caf50;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    height: 100px;
+    display: flex;                 
+    justify-content: space-between;
+    align-items: center;           
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .links a {
+    color: rgb(5, 226, 255);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .links a:hover {
+    text-decoration: underline;
+  }
+  
+
+  .galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  
+  .boi-foto {
+    width: 100%;
+    height: 150px;
+    object-fit:contain ;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-weight: bold;
+    color: #333333;
+  }

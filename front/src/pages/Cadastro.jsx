@@ -10,17 +10,24 @@ export default function Cadastro() {
   const [peso, setPeso] = useState(0);
   const [pelagem, setPelagem] = useState("");
   const [tipo, setTipo] = useState("");
+  const [imagem, setImagem] = useState(null); 
   const [resposta, setResposta] = useState(null);
 
   const enviarDados = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await axios.post("http://localhost:3000/cadastro", {
-        raca,
-        peso,
-        pelagem,
-        tipo,
+      const formData = new FormData();
+      formData.append("raca", raca);
+      formData.append("peso", peso);
+      formData.append("pelagem", pelagem);
+      formData.append("tipo", tipo);
+      if (imagem) formData.append("imagem", imagem);
+
+      const res = await axios.post("http://localhost:3000/cadastro", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
       setResposta(res.data);
       navigate("/");
     } catch (err) {
@@ -64,11 +71,18 @@ export default function Cadastro() {
             placeholder="Digite o tipo"
           /> <br/>
 
+<label>Selecione a imagem</label><br/>
+<input
+  type="file"
+  accept="image/*"
+  onChange={(e) => setImagem(e.target.files[0])}
+/>
+{imagem && <p className="file-name">Arquivo selecionado: {imagem.name}</p>}
+ <br/>
+
           <button type="submit">SALVAR</button>
         </form>
       </div>
     </div>
   );
 }
-
-

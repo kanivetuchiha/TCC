@@ -128,7 +128,7 @@ export default function Home() {
   return (
     <div className="container">
       <nav className="navbar">
-        <h1>Gerenciamento de Gado</h1>
+        <h1>Gerenciamento de Bovinos</h1>
         <div className="links">
           <a href="" onClick={() => navigate("/galeria")}>galeria bovina</a>
           <a href="" onClick={() => navigate("/sobre")}>Sobre</a>
