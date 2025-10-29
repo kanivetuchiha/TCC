@@ -1,6 +1,6 @@
 para iniciar o projeto no navegador abra dois terminais. no primeiro digite o caminho do projeto mais /back,
-depois inicie com npm run dev.
-no segundo terminal insira o caminho do projeto mais /front e dê npm run dev e click no link fornecido.
+depois inicie com npm i e npm run dev.
+no segundo terminal insira o caminho do projeto mais /front e dê npm i e npm run dev e click no link fornecido.
 para que a API funcione corretamente abra o arquivo TCC/back/constrollers/controllers.js e altere o seguinte codigo entre as linhas 9 e 15: 
 const pool = new Pool({
   user: "/*seu usuario*/",
